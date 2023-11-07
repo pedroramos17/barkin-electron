@@ -13,16 +13,16 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Profile />} />
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/driver" element={<Driver />}>
-          <Route path="/driver/create" element={<DriverForm />} />
+          <Route path="create" element={<DriverForm />} />
         </Route>
         <Route path="/gateway" element={<Gateway />}>
-          <Route path=":id" element={<GatewayForm />} />
+          <Route path="create" element={<GatewayForm />} />
         </Route>
         <Route path="/profile" element={<Profile />}>
-          <Route path=":id" element={<ProfileForm />} />
+          <Route path="edit" element={<ProfileForm />} />
         </Route>
       </Routes>
     </Router>
