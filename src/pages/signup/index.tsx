@@ -1,32 +1,11 @@
 import { Link } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
-import styled from '@emotion/styled';
 import logo from '../../../assets/logo.png';
-
-const Container = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  width: 124px;
-  margin-bottom: 24px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 28px;
-`;
+import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 
 export default function Signup() {
   return (
-    <Container>
+    <ContainerCentered>
       <Image src={logo} alt="logo" />
       <form
         action="/driver"
@@ -68,6 +47,6 @@ export default function Signup() {
           </Typography>
         </Wrapper>
       </form>
-    </Container>
+    </ContainerCentered>
   );
 }
