@@ -1,12 +1,10 @@
 import styled from '@emotion/styled';
-import { TextField, IconButton, Toolbar, Tooltip } from '@mui/material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { TextField, IconButton, Toolbar, Tooltip, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import DriverTable from '../../components/table/driver/table';
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,30 +12,45 @@ const Container = styled.div`
   overflow: auto;
   padding: 32px 40px;
 `;
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 0 4px;
+  width: 100%;
+  margin-bottom: 24px;
+`;
 
 export default function Driver() {
   return (
     <Container>
-      <h1 className="text-2xl font-bold">Motoristas</h1>
-      <div className="flex px-2 items-end">
+      <h1>Motoristas</h1>
+      <HeaderContainer>
         <TextField
           placeholder="Pesquisar"
           variant="standard"
-          className="w-full"
+          sx={{ width: '100%' }}
         />
-        <Toolbar className="flex justify-between items-end p-0 space-x-4">
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'end',
+            gap: 4,
+          }}
+        >
           <Tooltip title="Filtrar">
             <IconButton>
               <FilterAltIcon sx={{ fontSize: 36 }} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Adicionar">
-            <IconButton>
-              <AddCircleIcon color="primary" sx={{ fontSize: 64 }} />
-            </IconButton>
+            <Fab color="primary" size="large" href="/driver/create">
+              <AddIcon sx={{ fontSize: 48 }} />
+            </Fab>
           </Tooltip>
         </Toolbar>
-      </div>
+      </HeaderContainer>
       <DriverTable />
     </Container>
   );
