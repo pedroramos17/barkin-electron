@@ -16,3 +16,24 @@ export const HeaderContainer = styled.div`
   width: 100%;
   margin-bottom: 24px;
 `;
+
+export const ContainerCentered = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Image = styled.img`
+  width: 124px;
+  margin-bottom: 24px;
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 28px;
+`;
