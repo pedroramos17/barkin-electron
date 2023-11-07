@@ -1,0 +1,11 @@
+thead {
+  @apply font-bold border-y border-slate-100;
+}
+
+thead * {
+  @apply px-8 py-2;
+}
+
+tbody * {
+  @apply mt-3;
+}
