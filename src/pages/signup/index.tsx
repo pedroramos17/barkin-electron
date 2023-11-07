@@ -59,7 +59,7 @@ export default function Signup() {
           label="Sua senha"
           required
         />
-        <Wrapper className="w-44 space-y-8">
+        <Wrapper>
           <Button type="submit" variant="contained">
             Cadastrar
           </Button>

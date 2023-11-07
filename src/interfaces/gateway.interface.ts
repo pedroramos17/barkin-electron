@@ -6,3 +6,12 @@ export interface GatewayData {
   plate: string;
   parked: boolean;
 }
+export interface GatehouseData {
+  id: string;
+  name: string;
+  car: string;
+  plate: string;
+  date: number;
+  hour: number;
+  type: string;
+}

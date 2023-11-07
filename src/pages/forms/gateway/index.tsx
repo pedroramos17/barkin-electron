@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { Toolbar, Tooltip, IconButton, Fab, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { TextField } from '@mui/material';
 import GatewayTable from '../../../components/table/gatewayForm/table';
 import RoundedTabs from '../../../components/tabs/roundedTabs';
+import SearchTool from '../../../components/SearchTool';
 
 const Container = styled.div`
   overflow: auto;
@@ -46,25 +45,7 @@ export default function GatewayForm() {
           variant="standard"
           sx={{ width: '100%' }}
         />
-        <Toolbar
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'end',
-            gap: 4,
-          }}
-        >
-          <Tooltip title="Filtrar">
-            <IconButton>
-              <FilterAltIcon sx={{ fontSize: 36 }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Adicionar">
-            <Fab color="primary" size="large">
-              <AddIcon sx={{ fontSize: 48 }} />
-            </Fab>
-          </Tooltip>
-        </Toolbar>
+        <SearchTool />
       </Header>
       <GatewayTable tabValue={tabValue} />
     </Container>

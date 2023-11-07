@@ -14,7 +14,6 @@ import { GatewayData } from '../../../interfaces/gateway.interface';
 import getComparator, { Order } from '../sorting';
 import GatewayTableToolbar from './tableToolbar';
 import GatewayTableHead from './tableHead';
-import PaginationTable from './tablePagination';
 
 function createData(
   id: string,
