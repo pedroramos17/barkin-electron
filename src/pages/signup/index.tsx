@@ -1,13 +1,43 @@
 import { Link } from 'react-router-dom';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Typography } from '@mui/material';
+import styled from '@emotion/styled';
 import logo from '../../../assets/logo.png';
-import './style.css';
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Image = styled.img`
+  width: 124px;
+  margin-bottom: 24px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 28px;
+`;
 
 export default function Signup() {
   return (
-    <section>
-      <img src={logo} alt="logo" />
-      <form action="/" method="post">
+    <Container>
+      <Image src={logo} alt="logo" />
+      <form
+        action="/driver"
+        method="post"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '80%',
+          gap: 20,
+        }}
+      >
         <TextField
           type="text"
           name="name"
@@ -29,17 +59,15 @@ export default function Signup() {
           label="Sua senha"
           required
         />
-        <div className="flex justify-center">
-          <div className="w-44 space-y-8">
-            <Button type="submit" variant="contained">
-              Cadastrar
-            </Button>
-            <div>
-              Já tem uma conta? <Link to="/">Clique aqui para entrar</Link>
-            </div>
-          </div>
-        </div>
+        <Wrapper className="w-44 space-y-8">
+          <Button type="submit" variant="contained">
+            Cadastrar
+          </Button>
+          <Typography variant="body1" style={{ marginTop: 16 }}>
+            Já tem uma conta? <Link to="/">Clique aqui para entrar</Link>
+          </Typography>
+        </Wrapper>
       </form>
-    </section>
+    </Container>
   );
 }
