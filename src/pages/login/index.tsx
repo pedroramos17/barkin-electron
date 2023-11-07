@@ -29,6 +29,7 @@ export default function Login() {
     <Container>
       <Image src={logo} alt="logo" />
       <form
+        method="post"
         action="/driver"
         style={{
           display: 'flex',
@@ -42,14 +43,14 @@ export default function Login() {
           name="email"
           id="email"
           label="Seu email"
-          // required
+          required
         />
         <TextField
           type="password"
           name="pwd"
           id="pwd"
           label="Sua senha"
-          // required
+          required
         />
         <Wrapper>
           <Button type="submit" variant="contained">
