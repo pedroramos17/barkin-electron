@@ -9,6 +9,18 @@ import GatewayForm from '../pages/forms/gateway';
 import Profile from '../pages/profile';
 import ProfileForm from '../pages/forms/profile';
 
+// // Get api ipc connection from main world process
+
+// // calling IPC exposed from preload script
+// window.electron.ipcRenderer.once('api', (arg) => {
+//   //form post signup email and password
+
+//   const request = {
+//     name: arg.name,
+//     email: arg.email,
+//     password: arg.password,
+//   }
+// });
 export default function App() {
   return (
     <Router>

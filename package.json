@@ -101,6 +101,7 @@
     "@mui/base": "^5.0.0-beta.23",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
+    "electron-cookies": "^1.1.0",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
     "electron-updater": "^6.1.4",
