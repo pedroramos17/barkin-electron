@@ -6,6 +6,8 @@ import logo from '../../../assets/logo.png';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 
 export default function Signup() {
+  const API_HOST = 'http://localhost';
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,9 +21,29 @@ export default function Signup() {
       [name]: value,
     });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  type Token = {
+    token: string;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ipcRenderer.send('signup-form', formData);
+    try {
+      const response = await fetch(`${API_HOST}/resgister`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const token: Token = await response.json();
+        // Save the token securely in your Electron app (e.g., using `secure-electron-store`).
+      }
+    } catch (error) {
+      // Handle network errors
+    }
   };
 
   useEffect(() => {
