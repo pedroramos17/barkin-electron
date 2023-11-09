@@ -21,10 +21,6 @@ export default function Signup() {
     });
   };
 
-  type Token = {
-    token: string;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -37,15 +33,13 @@ export default function Signup() {
       });
 
       if (response.ok) {
-        const body: Token = await response.json();
+        const body = await response.json();
+        const { token } = body;
         // Save the token securely in your Electron app or database
-        window.electron.store.set('token', body.token);
-
-        console.log(window.electron.store.get('token'));
+        window.electron.store.set('token', token);
       }
     } catch (error) {
       // Handle network errors
-      console.error(error);
     }
   };
   return (

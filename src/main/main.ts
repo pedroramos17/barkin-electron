@@ -26,21 +26,15 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-const store = new Store();
+// const store = new Store();
 
-// IPC listener
-ipcMain.on('electron-store-get', async (event, val) => {
-  event.returnValue = store.get(val);
-});
-ipcMain.on('electron-store-set', async (event, key, val) => {
-  store.set(key, val);
-});
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
+// IPC listener generates a bug in sendMessage
+// ipcMain.on('electron-store-get', async (event, val) => {
+//   event.returnValue = store.get(val);
+// });
+// ipcMain.on('electron-store-set', async (_event, key, val) => {
+//   store.set(key, val);
+// });
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
