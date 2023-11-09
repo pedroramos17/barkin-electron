@@ -2,14 +2,14 @@
   "description": "A parking management app",
   "keywords": [
     "electron",
-    "boilerplate",
+    "parking",
     "react",
     "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "desktop",
+    "management",
+    "gatehouse",
+    "gateway",
+    "app"
   ],
   "homepage": "https://github.com/pedroramos17/barkin-clone#readme",
   "bugs": {
@@ -17,21 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pedroramos17/electron-react-boilerplate.git"
+    "url": "git+https://github.com/pedroramos17/barkin-electron.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://pedroramos17.js.org"
+    "name": "Pedro Ramos",
+    "url": "https://github.com/pedroramos17"
   },
-  "contributors": [
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    }
-  ],
   "main": "./src/main/main.ts",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
