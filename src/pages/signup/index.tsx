@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { ipcRenderer } from 'electron';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
-import logo from '../../../assets/logo.png';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
+import logo from '../../../assets/logo.png';
+
+const API_HOST = 'http://localhost';
 
 export default function Signup() {
-  const API_HOST = 'http://localhost';
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -50,21 +49,6 @@ export default function Signup() {
       throw new Error('Failed to submit form');
     }
   };
-
-  useEffect(() => {
-    ipcRenderer.on('form-submission-success', (_event, _data) => {
-      alert('Cadastrado com sucesso');
-    });
-
-    ipcRenderer.on('form-submission-error', (_event, error) => {
-      alert(error);
-    });
-
-    return () => {
-      ipcRenderer.removeAllListeners('form-submission-success');
-      ipcRenderer.removeAllListeners('form-submission-error');
-    };
-  }, []);
   return (
     <ContainerCentered>
       <Image src={logo} alt="logo" />
