@@ -36,16 +36,6 @@ ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
 
-ipcMain.on('submit-form', async (event, formData) => {
-  try {
-    const apiResponse = await signupResquest(formData);
-
-    event.sender.send('form-submission-success', apiResponse);
-  } catch (error) {
-    event.sender.send('form-submission-error', error);
-  }
-});
-
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
