@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -26,10 +26,6 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-const API_HOST = 'http://localhost';
-
-const appSession = session.fromPartition('persist:auth');
-
 const store = new Store();
 
 // IPC listener
@@ -39,84 +35,6 @@ ipcMain.on('electron-store-get', async (event, val) => {
 ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
-
-const csrfRequest = async () =>
-  fetch(`${API_HOST}/sanctum/csrf-cookie`, {
-    method: 'GET',
-  });
-
-const cookiesResponse = await csrfRequest();
-
-const cookiesFromResponse = cookiesResponse.headers['set-cookie'];
-function parseCookieString(cookieString: string) {
-  const cookieParts = cookieString.split(';');
-  const [name, value] = cookieParts[0].split('=');
-  const domain = cookieParts
-    ? cookieParts
-        .find((part) => part.trim().startsWith('Domain='))
-        .trim()
-        .substring(7)
-    : undefined;
-  const path = cookieParts
-    ? cookieParts
-        .find((part) => part.trim().startsWith('Path='))
-        .trim()
-        .substring(5)
-    : '';
-
-  return {
-    name,
-    value,
-    domain,
-    path,
-    // You can parse more cookie properties if necessary (e.g., secure, httpOnly, etc.)
-  };
-}
-
-cookiesFromResponse.forEach((cookie: string) => {
-  const parsedCookie = parseCookieString(cookie);
-  electronCookies.set({
-    name: parsedCookie.name,
-    value: parsedCookie.value,
-    domain: parsedCookie.domain,
-    path: parsedCookie.path,
-    session: appSession,
-  });
-});
-
-// Function to retrieve cookies from the Electron session
-const getCookies = () => {
-  const cookies = electronCookies.filter({
-    session: session.defaultSession,
-  });
-
-  // Convert the cookies into a string that can be included in the request header
-  const cookieString = cookies
-    .map((cookie: any) => `${cookie.name}=${cookie.value}`)
-    .join('; ');
-
-  return cookieString;
-};
-
-const signupResquest = async (formData: any) => {
-  const cookies = getCookies();
-
-  const resquestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: cookies,
-    },
-    body: JSON.stringify(formData),
-  };
-
-  try {
-    const response = await fetch(`${API_HOST}/resgister`, resquestOptions);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 ipcMain.on('submit-form', async (event, formData) => {
   try {
