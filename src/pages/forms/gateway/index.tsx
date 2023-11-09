@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import GatewayTable from '../../../components/table/gatewayForm/table';
 import RoundedTabs from '../../../components/tabs/roundedTabs';
 import SearchTool from '../../../components/SearchTool';
+import { HandleTabsProps } from '../../../interfaces/tab.interface';
 
 const Container = styled.div`
   overflow: auto;
@@ -11,27 +12,27 @@ const Container = styled.div`
   gap: 24px;
 `;
 
+const TabsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Header = styled.header`
+  width: '100%';
+  display: flex;
+  align-items: end;
+  padding: 24px 0;
+`;
+
 export default function GatewayForm() {
   const [tabValue, setTabValue] = useState(0);
 
-  const handleParkedTab = (
-    event: React.SyntheticEvent<Element, Event> | null,
-    value: number | string | null,
+  const handleParkedTab: HandleTabsProps['handleParkedTab'] = (
+    _event,
+    value,
   ) => {
     setTabValue(Number(value));
   };
-
-  const TabsContainer = styled.div`
-    display: flex;
-    justify-content: center;
-  `;
-
-  const Header = styled.header`
-    width: '100%';
-    display: flex;
-    align-items: end;
-    padding: 24px 0;
-  `;
 
   return (
     <Container>

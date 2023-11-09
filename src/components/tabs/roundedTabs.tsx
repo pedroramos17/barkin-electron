@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styled } from '@mui/system';
 import { Tabs } from '@mui/base/Tabs';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
 import { buttonClasses } from '@mui/base/Button';
 import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
+import { HandleTabsProps } from '../../interfaces/tab.interface';
 
 const blue = {
   50: '#F0F7FF',
@@ -72,18 +73,23 @@ const TabsList = styled(BaseTabsList)(
   `,
 );
 
-interface HandleTabsProps {
-  handleParkedTab: (
-    event: React.SyntheticEvent<Element, Event> | null,
-    value: number | string | null,
-  ) => void;
-}
-
 export default function RoundedTabs(props: Readonly<HandleTabsProps>) {
   const { handleParkedTab } = props;
+
+  const handleParkedTabChange = useMemo(
+    () =>
+      (
+        event: React.SyntheticEvent<Element, Event> | null,
+        value: number | string | null,
+      ) => {
+        handleParkedTab(event, value);
+      },
+    [handleParkedTab],
+  );
+
   return (
     <div>
-      <Tabs onChange={handleParkedTab} defaultValue={0}>
+      <Tabs onChange={handleParkedTabChange} defaultValue={0}>
         <TabsList>
           <Tab value={0}>Entrada</Tab>
           <Tab value={1}>Saída</Tab>
