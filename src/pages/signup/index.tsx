@@ -29,7 +29,7 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_HOST}/resgister`, {
+      const response = await fetch(`${API_HOST}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,11 +38,16 @@ export default function Signup() {
       });
 
       if (response.ok) {
-        const token: Token = await response.json();
-        // Save the token securely in your Electron app (e.g., using `secure-electron-store`).
+        const body: Token = await response.json();
+        // Save the token securely in your Electron app or database
+        window.electron.store.set('token', body.token);
+
+        console.log(window.electron.store.get('token'));
       }
     } catch (error) {
       // Handle network errors
+      console.error(error);
+      throw new Error('Failed to submit form');
     }
   };
 

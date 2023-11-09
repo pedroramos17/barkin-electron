@@ -10,11 +10,11 @@
  */
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
+import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import electronCookies from 'electron-cookies';
 
 class AppUpdater {
   constructor() {
@@ -29,6 +29,16 @@ let mainWindow: BrowserWindow | null = null;
 const API_HOST = 'http://localhost';
 
 const appSession = session.fromPartition('persist:auth');
+
+const store = new Store();
+
+// IPC listener
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val);
+});
+ipcMain.on('electron-store-set', async (event, key, val) => {
+  store.set(key, val);
+});
 
 const csrfRequest = async () =>
   fetch(`${API_HOST}/sanctum/csrf-cookie`, {
