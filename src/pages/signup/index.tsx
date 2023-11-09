@@ -46,7 +46,6 @@ export default function Signup() {
     } catch (error) {
       // Handle network errors
       console.error(error);
-      throw new Error('Failed to submit form');
     }
   };
   return (
