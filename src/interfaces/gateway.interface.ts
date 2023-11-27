@@ -15,3 +15,10 @@ export interface GatehouseData {
   hour: number;
   type: string;
 }
+
+export interface GatewayApiResponse {
+  id: string;
+  date: string;
+  parked: boolean;
+  driver_id: string;
+}

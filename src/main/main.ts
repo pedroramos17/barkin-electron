@@ -29,10 +29,10 @@ let mainWindow: BrowserWindow | null = null;
 const store = new Store();
 
 ipcMain.on('electron-store-get', async (event, val) => {
-  event.returnValue = store.get(val);
+  event.returnValue = await store.get(val);
 });
 ipcMain.on('electron-store-set', async (_event, key, val) => {
-  store.set(key, val);
+  await store.set(key, val);
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -84,6 +84,23 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
+
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+    (details, callback) => {
+      callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
+    },
+  );
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Access-Control-Allow-Origin': ['*'],
+        },
+      });
+    },
+  );
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 

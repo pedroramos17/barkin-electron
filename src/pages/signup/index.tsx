@@ -1,66 +1,60 @@
-import React, { useState } from 'react';
+import { useFormik, FormikHelpers } from 'formik';
+import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 import logo from '../../../assets/logo.png';
-
-const API_HOST = 'http://localhost';
+import { UserRegisterForm } from '../../interfaces/user.interface';
+import Auth from '../../services/auth.service';
 
 export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    pwd: '',
-  });
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+    },
+    validationSchema: Yup.object().shape({
+      name: Yup.string().required('Nome obrigatório'),
+      email: Yup.string().email('Email inválido').required('Email obrigatório'),
+      password: Yup.string().min(6).required('Senha obrigatória'),
+      passwordConfirmation: Yup.string().oneOf(
+        [Yup.ref('password')],
+        'As senhas precisam ser iguais',
+      ),
+    }),
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${API_HOST}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const body = await response.json();
-        const { token } = body;
-        // Save the token securely in your Electron app or database
-        window.electron.store.set('token', token);
+    onSubmit: async (
+      formValue: UserRegisterForm,
+      { setSubmitting }: FormikHelpers<UserRegisterForm>,
+    ) => {
+      const response = await Auth.registerUser(formValue);
+      if (response !== null) {
+        console.log(response);
+        return;
       }
-    } catch (error) {
-      // Handle network errors
-    }
-  };
+      setSubmitting(false);
+    },
+  });
   return (
     <ContainerCentered>
       <Image src={logo} alt="logo" />
       <form
-        onSubmit={handleSubmit}
-        action="/driver"
-        method="post"
+        onSubmit={formik.handleSubmit}
         style={{
           display: 'flex',
           flexDirection: 'column',
           width: '80%',
           gap: 20,
         }}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.email}
       >
         <TextField
           type="text"
           name="name"
-          value={formData.name}
-          onChange={handleInputChange}
           id="name"
           label="Seu nome"
           required
@@ -68,19 +62,22 @@ export default function Signup() {
         <TextField
           type="text"
           name="email"
-          value={formData.email}
-          onChange={handleInputChange}
           id="email"
           label="Seu email"
           required
         />
         <TextField
           type="password"
-          name="pwd"
-          value={formData.pwd}
-          onChange={handleInputChange}
-          id="pwd"
+          name="password"
+          id="password"
           label="Sua senha"
+          required
+        />
+        <TextField
+          type="password"
+          name="password_confirmation"
+          id="password_confirmation"
+          label="Confirme sua senha"
           required
         />
         <Wrapper>
