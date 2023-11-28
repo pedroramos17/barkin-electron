@@ -3,13 +3,13 @@ import authHeader from './authHeader';
 import { GatewayApiResponse } from '../interfaces/gateway.interface';
 import API_HOST from '../config/api';
 
-const GATEWAY_ROUTE = `${API_HOST}gateway/`;
+const GATEWAY_ROUTE = `${API_HOST}/gateway/`;
 
 const getGateways = async () => {
   return axios.get(GATEWAY_ROUTE, { headers: authHeader() });
 };
 
-const getGateway = async (id: string) => {
+const findGateway = async (id: string) => {
   return axios.get(`${GATEWAY_ROUTE}${id}`, { headers: authHeader() });
 };
 
@@ -25,4 +25,4 @@ const deleteGateway = async (id: string) => {
   return axios.delete(`${GATEWAY_ROUTE}${id}`, { headers: authHeader() });
 };
 
-export { getGateways, getGateway, postGateway, putGateway, deleteGateway };
+export { getGateways, findGateway, postGateway, putGateway, deleteGateway };

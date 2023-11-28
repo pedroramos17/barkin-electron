@@ -1,25 +1,29 @@
 import axios from 'axios';
-import API_HOST from '../config/api';
+import API_URL from '../config/api';
 import { UserLoginForm, UserRegisterForm } from '../interfaces/user.interface';
 
 type GetUserResponse = {
   message?: string;
   token?: string;
 };
-const jsonHeaders = {
+
+const REGISTER_URL = '/register';
+
+const LOGIN_URL = '/login';
+
+const HEADERS = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
 };
+
 export default class Auth {
   static async registerUser(userProps: UserRegisterForm) {
     const { name, email, password, passwordConfirmation } = userProps;
     try {
       const response = await axios.post<GetUserResponse>(
-        `${API_HOST}register`,
+        API_URL + REGISTER_URL,
         {
-          headers: {
-            jsonHeaders,
-          },
+          headers: { HEADERS },
           name,
           email,
           password,
@@ -40,10 +44,8 @@ export default class Auth {
   static async loginUser(userProps: UserLoginForm) {
     const { email, password } = userProps;
     try {
-      const response = await axios.post<GetUserResponse>(`${API_HOST}login`, {
-        headers: {
-          jsonHeaders,
-        },
+      const response = await axios.post<GetUserResponse>(API_URL + LOGIN_URL, {
+        headers: { HEADERS },
         email,
         password,
       });

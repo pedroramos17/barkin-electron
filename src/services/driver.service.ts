@@ -2,13 +2,13 @@ import axios from 'axios';
 import authHeader from './authHeader';
 import API_HOST from '../config/api';
 
-const DRIVER_ROUTE = `${API_HOST}driver/`;
+const DRIVER_ROUTE = `${API_HOST}/driver/`;
 
 const getDrivers = async () => {
   return axios.get(DRIVER_ROUTE, { headers: authHeader() });
 };
 
-const getDriver = async (id: string) => {
+const findDriver = async (id: string) => {
   return axios.get(`${DRIVER_ROUTE}${id}`, { headers: authHeader() });
 };
 
@@ -24,4 +24,4 @@ const deleteDriver = async (id: string) => {
   return axios.delete(`${DRIVER_ROUTE}${id}`, { headers: authHeader() });
 };
 
-export { getDrivers, getDriver, postDriver, putDriver, deleteDriver };
+export { getDrivers, findDriver, postDriver, putDriver, deleteDriver };
