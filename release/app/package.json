@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
+  "name": "Barkin",
   "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "description": "Parking management app",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Barkin Team",
+    "email": "pedrosouza.skylabs@gmail.com",
+    "url": "https://github.com/pedroramos17"
   },
   "main": "./dist/main/main.js",
   "scripts": {
@@ -14,5 +14,7 @@
     "postinstall": "npm run rebuild && npm run link-modules",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
   },
-  "dependencies": {}
+  "dependencies": {
+    "keytar": "^7.9.0"
+  }
 }
