@@ -1,41 +1,43 @@
 import { useFormik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 import { TextField, Button, Typography } from '@mui/material';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 import logo from '../../../assets/logo.png';
 import { UserRegisterForm } from '../../interfaces/user.interface';
-import Auth from '../../services/auth.service';
+import { registerUser } from '../../services/auth.service';
 
+const initialValues: UserRegisterForm = {
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+};
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Nome obrigatório'),
+  email: Yup.string().email('Email inválido').required('Email obrigatório'),
+  password: Yup.string().min(6).required('Senha obrigatória'),
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref('password')],
+    'As senhas precisam ser iguais',
+  ),
+});
+
+const onSubmit = async (
+  formValue: UserRegisterForm,
+  { setSubmitting }: FormikHelpers<UserRegisterForm>,
+) => {
+  let response: AxiosResponse;
+  response = await registerUser(formValue);
+  setSubmitting(false);
+};
 export default function Signup() {
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-    },
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required('Nome obrigatório'),
-      email: Yup.string().email('Email inválido').required('Email obrigatório'),
-      password: Yup.string().min(6).required('Senha obrigatória'),
-      passwordConfirmation: Yup.string().oneOf(
-        [Yup.ref('password')],
-        'As senhas precisam ser iguais',
-      ),
-    }),
-
-    onSubmit: async (
-      formValue: UserRegisterForm,
-      { setSubmitting }: FormikHelpers<UserRegisterForm>,
-    ) => {
-      const response = await Auth.registerUser(formValue);
-      if (response !== null) {
-        console.log(response);
-        return;
-      }
-      setSubmitting(false);
-    },
+    initialValues,
+    validationSchema,
+    onSubmit,
   });
   return (
     <ContainerCentered>
@@ -48,9 +50,6 @@ export default function Signup() {
           width: '80%',
           gap: 20,
         }}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.email}
       >
         <TextField
           type="text"
@@ -58,6 +57,11 @@ export default function Signup() {
           id="name"
           label="Seu nome"
           required
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
         />
         <TextField
           type="text"
@@ -65,6 +69,11 @@ export default function Signup() {
           id="email"
           label="Seu email"
           required
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
         />
         <TextField
           type="password"
@@ -72,13 +81,29 @@ export default function Signup() {
           id="password"
           label="Sua senha"
           required
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
         />
         <TextField
           type="password"
-          name="password_confirmation"
-          id="password_confirmation"
+          name="passwordConfirmation"
+          id="passwordConfirmation"
           label="Confirme sua senha"
           required
+          value={formik.values.passwordConfirmation}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            formik.touched.passwordConfirmation &&
+            Boolean(formik.errors.passwordConfirmation)
+          }
+          helperText={
+            formik.touched.passwordConfirmation &&
+            formik.errors.passwordConfirmation
+          }
         />
         <Wrapper>
           <Button type="submit" variant="contained">

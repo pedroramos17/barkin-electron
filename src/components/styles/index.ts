@@ -28,6 +28,7 @@ export const ContainerCentered = styled.div`
 export const Image = styled.img`
   width: 124px;
   margin-bottom: 24px;
+  display: block;
 `;
 
 export const Wrapper = styled.div`

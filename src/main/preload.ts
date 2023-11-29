@@ -2,6 +2,18 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer } from 'electron';
 
+const barkinAPI = {
+  logout: async () => ipcRenderer.invoke('logout'),
+  getUser: async () => ipcRenderer.invoke('getUser'),
+  getDrivers: async () => ipcRenderer.invoke('getDrivers'),
+  getVehicles: async () => ipcRenderer.invoke('getVehicles'),
+  getGateways: async () => ipcRenderer.invoke('getGateways'),
+};
+
+process.once('loaded', () => {
+  contextBridge.exposeInMainWorld('barkinAPI', barkinAPI);
+});
+
 contextBridge.exposeInMainWorld('electron', {
   store: {
     get(key: string) {

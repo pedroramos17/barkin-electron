@@ -15,6 +15,10 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import getUser from '../services/user.service';
+import { getVehicles } from '../services/vehicle.service';
+import { getDrivers } from '../services/driver.service';
+import { getGateways } from '../services/gateway.service';
 
 class AppUpdater {
   constructor() {
@@ -24,16 +28,9 @@ class AppUpdater {
   }
 }
 
-let mainWindow: BrowserWindow | null = null;
-
 const store = new Store();
 
-ipcMain.on('electron-store-get', async (event, val) => {
-  event.returnValue = await store.get(val);
-});
-ipcMain.on('electron-store-set', async (_event, key, val) => {
-  await store.set(key, val);
-});
+let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -143,6 +140,19 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('ready', () => {
+  ipcMain.on('electron-store-get', async (event, val) => {
+    event.returnValue = await store.get(val);
+  });
+  ipcMain.on('electron-store-set', async (_event, key, val) => {
+    await store.set(key, val);
+  });
+  ipcMain.handle('user', getUser);
+  ipcMain.handle('getDrivers', getDrivers);
+  ipcMain.handle('getVehicles', getVehicles);
+  ipcMain.handle('getGateways', getGateways);
 });
 
 app
