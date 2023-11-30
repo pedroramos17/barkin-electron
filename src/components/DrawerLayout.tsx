@@ -138,42 +138,60 @@ export default function DrawerLayout({ children }: any) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Motoristas', 'Portaria', 'Perfil'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          {['Motoristas', 'Portaria', 'Perfil'].map((text, index) => {
+            let link = '';
+            if (index == 0) {
+              link = '/driver';
+            } else if (index == 1) {
+              link = '/gateway';
+            } else if (index == 2) {
+              link = '/profile';
+            }
+            return (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index === 0 && (
-                    <Link to="/driver">
-                      <DriverIcon />
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 && (
+                      <Link to="/driver">
+                        <DriverIcon />
+                      </Link>
+                    )}
+                    {index === 1 && (
+                      <Link to="/gateway">
+                        <GateUpIcon />
+                      </Link>
+                    )}
+                    {index === 2 && (
+                      <Link to="/profile">
+                        <ProfileIcon />
+                      </Link>
+                    )}
+                  </ListItemIcon>
+
+                  <ListItemText sx={{ opacity: open ? 1 : 0 }}>
+                    <Link
+                      style={{ textDecoration: 'none', color: 'black' }}
+                      to={link}
+                    >
+                      {text}
                     </Link>
-                  )}
-                  {index === 1 && (
-                    <Link to="/gateway">
-                      <GateUpIcon />
-                    </Link>
-                  )}
-                  {index === 2 && (
-                    <Link to="/profile">
-                      <ProfileIcon />
-                    </Link>
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
