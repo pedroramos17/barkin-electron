@@ -12,7 +12,6 @@ import Layout from '../components/Layout';
 import Missing from '../components/Missing';
 import RequireAuth from '../components/RequireAuth';
 import AuthProvider from '../contexts/AuthProvider';
-import DrawerLayout from '../components/DrawerLayout';
 
 export default function App() {
   return (
