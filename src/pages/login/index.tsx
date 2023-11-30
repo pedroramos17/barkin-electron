@@ -1,65 +1,41 @@
-import { useContext } from 'react';
 import { FormikHelpers, useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
-import logo from '../../../assets/logo.png';
 import { loginUser } from '../../services/auth.service';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 import { UserLoginForm } from '../../interfaces/user.interface';
-import { AuthContext } from '../../context/AuthProvider';
-
-const initialValues = {
-  email: '',
-  password: '',
-};
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Email inválido').required('Email obrigatório'),
-  password: Yup.string()
-    .min(6, 'Senha deve ter no mínimo 6 caracteres')
-    .required('Senha obrigatória'),
-});
+import logo from '../../../assets/logo.png';
+import useAuth from '../../hooks/useAuth';
 
 export default function Login() {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth }: any = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || '/';
 
-  // let auth;
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Email inválido').required('Email obrigatório'),
+    password: Yup.string()
+      .min(6, 'Senha deve ter no mínimo 6 caracteres')
+      .required('Senha obrigatória'),
+  });
   const onSubmit = async (
     formValue: UserLoginForm,
-    { setSubmitting, setFieldError }: FormikHelpers<UserLoginForm>,
+    { setSubmitting }: FormikHelpers<UserLoginForm>,
   ) => {
-    await loginUser(formValue, { redirectTo: '/driver' }).then(
-      (response) => {
-        const accessToken = window.electron.store.get('user')?.token;
-        setAuth({
-          ...formValue,
-          accessToken,
-        });
-        setSubmitting(false);
-
-        if (accessToken) {
-          window.location.href = '/driver';
-        }
-        console.log(response);
-        return response;
-      },
-      (error) => {
-        console.log(error);
-        // if (auth.errors === 422) {
-        //   setFieldError('password', 'Email ou senha inválidos.');
-        //   setSubmitting(true);
-        // } else if (auth.errors === 401) {
-        //   setFieldError('password', 'Não autorizado a acessar.');
-        //   setSubmitting(true);
-        // } else if (auth.errors === 400) {
-        //   setFieldError('password', 'Está faltando o email ou a senha.');
-        //   setSubmitting(true);
-        // } else if (auth.errors === 500) {
-        //   setFieldError('password', 'Servidor indisponível.');
-        //   setSubmitting(true);
-        // }
-      },
-    );
+    const response = await loginUser(formValue);
+    setAuth({
+      ...formValue,
+      accessToken: window.electron.store.get('user').token,
+    });
+    setSubmitting(false);
+    console.log(response);
+    return navigate('/driver');
   };
   const formik = useFormik({
     initialValues,

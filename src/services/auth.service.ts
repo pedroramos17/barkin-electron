@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { redirect } from 'react-router-dom';
 import API_URL from '../config/api';
 import { UserLoginForm, UserRegisterForm } from '../interfaces/user.interface';
 
@@ -12,10 +11,7 @@ const HEADERS = {
   Accept: 'application/json',
 };
 
-export async function registerUser(
-  userProps: UserRegisterForm,
-  { redirectTo = '/' }: { redirectTo?: string },
-) {
+export async function registerUser(userProps: UserRegisterForm) {
   const { name, email, password, passwordConfirmation } = userProps;
   let response: AxiosResponse;
   try {
@@ -28,7 +24,18 @@ export async function registerUser(
       withCredentials: true,
     });
   } catch (error: any) {
-    return { errors: error };
+    let message = '';
+
+    console.log(error);
+    if (error === 422) {
+      message = 'Email ou senha inválidos.';
+    } else if (error === 401) {
+      message = 'Não autorizado a acessar.';
+    } else if (error === 500) {
+      message = 'Servidor indisponível.';
+    }
+
+    return { error: message };
   }
   let userData: { token?: string } = {};
   if (window.electron.store.get('user')) {
@@ -38,14 +45,11 @@ export async function registerUser(
   window.electron.store.set('user', userData);
 
   return {
-    redirector: redirect(redirectTo),
+    message: 'Conta criada com sucesso.',
   };
 }
 
-export async function loginUser(
-  userProps: UserLoginForm,
-  { redirectTo = '/' }: { redirectTo?: string },
-) {
+export async function loginUser(userProps: UserLoginForm) {
   const { email, password } = userProps;
   let response: AxiosResponse;
   try {
@@ -56,7 +60,17 @@ export async function loginUser(
       withCredentials: true,
     });
   } catch (error: any) {
-    return { errors: error?.response?.data?.status };
+    let message = '';
+    console.log(error);
+    if (error === 422) {
+      message = 'Email ou senha inválidos.';
+    } else if (error === 401) {
+      message = 'Não autorizado a acessar.';
+    } else if (error === 500) {
+      message = 'Servidor indisponível.';
+    }
+
+    return { error: message };
   }
 
   let userData: { token?: string } = {};
@@ -64,9 +78,9 @@ export async function loginUser(
     userData = window.electron.store.get('user');
   }
   userData.token = response.data.token;
-  window.electron.store.set('token', userData);
+  window.electron.store.set('user', userData);
 
   return {
-    redirector: redirect(redirectTo),
+    message: 'Login realizado com sucesso.',
   };
 }
