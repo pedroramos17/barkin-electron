@@ -17,7 +17,7 @@ process.once('loaded', () => {
 contextBridge.exposeInMainWorld('electron', {
   store: {
     get(key: string) {
-      return ipcRenderer.sendSync('store-get', key);
+      return ipcRenderer.send('store-get', key);
     },
     set(key: string, value: string) {
       ipcRenderer.send('store-set', key, value);

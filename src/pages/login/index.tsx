@@ -87,6 +87,7 @@ export default function Login() {
             <Typography variant="body1" style={{ marginTop: 16 }}>
               Não tem conta ainda? <Link to="/signup">Cadastre-se</Link>
             </Typography>
+            <Link to="/driver">To Driver</Link>
           </div>
         </Wrapper>
       </form>

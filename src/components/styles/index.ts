@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: start;
   overflow: auto;
-  padding: 32px 40px;
+  padding: 0 20px;
 `;
 export const HeaderContainer = styled.div`
   display: flex;
