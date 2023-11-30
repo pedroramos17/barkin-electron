@@ -109,6 +109,9 @@ export default function DriverTable() {
     [order, orderBy, page, rowsPerPage],
   );
 
+  const handleAddCar = (event: React.MouseEvent<unknown>, id: string) => {
+    console.log('add car');
+  };
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -132,7 +135,6 @@ export default function DriverTable() {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -143,6 +145,7 @@ export default function DriverTable() {
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
+                        onClick={(event) => handleClick(event, row.id)}
                         checked={isItemSelected}
                         inputProps={{
                           'aria-labelledby': labelId,
@@ -159,7 +162,7 @@ export default function DriverTable() {
                     </TableCell>
                     <TableCell align="center">{row.rg}</TableCell>
                     <TableCell align="center">{row.phone}</TableCell>
-                    <TableCell>
+                    <TableCell onClick={(event) => handleAddCar(event, row.id)}>
                       <Button variant="contained" color="info">
                         + Veículo
                       </Button>
