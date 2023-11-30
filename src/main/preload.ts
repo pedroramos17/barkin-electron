@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer } from 'electron';
 
-const barkinAPI = {
+const api = {
   logout: async () => ipcRenderer.invoke('logout'),
   getUser: async () => ipcRenderer.invoke('getUser'),
   getDrivers: async () => ipcRenderer.invoke('getDrivers'),
@@ -11,13 +11,13 @@ const barkinAPI = {
 };
 
 process.once('loaded', () => {
-  contextBridge.exposeInMainWorld('barkinAPI', barkinAPI);
+  contextBridge.exposeInMainWorld('api', api);
 });
 
 contextBridge.exposeInMainWorld('electron', {
   store: {
     get(key: string) {
-      return ipcRenderer.send('store-get', key);
+      return ipcRenderer.sendSync('store-get', key);
     },
     set(key: string, value: string) {
       ipcRenderer.send('store-set', key, value);

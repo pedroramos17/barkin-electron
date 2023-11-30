@@ -15,6 +15,8 @@ import getComparator, { Order } from '../sorting';
 import DriverTableToolbar from './tableToolbar';
 import DriverTableHead from './tableHead';
 import { DriverData } from '../../../interfaces/driver.interface';
+import { AxiosResponse } from 'axios';
+import { getDrivers } from '../../../api/services/driver.service';
 
 function createData(
   id: string,
@@ -29,6 +31,13 @@ function createData(
     phone,
   };
 }
+
+// transform the createData function into a json object for the table
+async function createRows() {
+  const response = await getDrivers();
+  console.log(response);
+}
+console.log(createRows());
 
 const rows = [
   createData('id-1', 'Pedro', 123456789, 11987654321),

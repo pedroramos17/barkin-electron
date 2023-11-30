@@ -2,7 +2,7 @@ import { FormikHelpers, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
-import { loginUser } from '../../services/auth.service';
+import { loginUser } from '../../api/services/auth.service';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 import { UserLoginForm } from '../../interfaces/user.interface';
 import logo from '../../../assets/logo.png';
@@ -31,11 +31,11 @@ export default function Login() {
     const response = await loginUser(formValue);
     setAuth({
       ...formValue,
-      accessToken: window.electron.store.get('user').token,
+      accessToken: window.electron.store.get('user')?.accessToken,
     });
     setSubmitting(false);
     console.log(response);
-    return navigate('/driver');
+    return navigate('/driver', { replace: true, state: { from } });
   };
   const formik = useFormik({
     initialValues,

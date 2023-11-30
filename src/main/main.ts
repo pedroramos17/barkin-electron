@@ -11,14 +11,16 @@
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import Store from 'electron-store';
+import keytar from 'keytar';
+import OperatingSystemUserName from 'username';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import getUser from '../services/user.service';
-import { getVehicles } from '../services/vehicle.service';
-import { getDrivers } from '../services/driver.service';
-import { getGateways } from '../services/gateway.service';
+import getUser from '../api/services/user.service';
+import { getVehicles } from '../api/services/vehicle.service';
+import { getDrivers } from '../api/services/driver.service';
+import { getGateways } from '../api/services/gateway.service';
 
 class AppUpdater {
   constructor() {
@@ -29,6 +31,9 @@ class AppUpdater {
 }
 
 const store = new Store();
+
+const keytarService = 'token';
+const keytarAccount = OperatingSystemUserName();
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -143,10 +148,10 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  ipcMain.on('electron-store-get', async (event, val) => {
+  ipcMain.on('store-get', async (event, val) => {
     event.returnValue = await store.get(val);
   });
-  ipcMain.on('electron-store-set', async (_event, key, val) => {
+  ipcMain.on('store-set', async (_event, key, val) => {
     await store.set(key, val);
   });
   ipcMain.handle('user', getUser);

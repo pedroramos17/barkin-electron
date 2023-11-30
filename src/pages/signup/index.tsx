@@ -6,7 +6,7 @@ import { TextField, Button, Typography } from '@mui/material';
 import { ContainerCentered, Image, Wrapper } from '../../components/styles';
 import logo from '../../../assets/logo.png';
 import { UserRegisterForm } from '../../interfaces/user.interface';
-import { registerUser } from '../../services/auth.service';
+import { registerUser } from '../../api/services/auth.service';
 
 const initialValues: UserRegisterForm = {
   name: '',

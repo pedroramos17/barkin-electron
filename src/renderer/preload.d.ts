@@ -7,6 +7,13 @@ declare global {
         // any other methods you've defined...
       };
     };
+    api: {
+      logout: () => any;
+      getUser: () => any;
+      getDrivers: () => any;
+      getVehicles: () => any;
+      getGateways: () => any;
+    };
   }
 }
 
